@@ -12,7 +12,7 @@ end
 
 %I've become more comfortable just using the field names as the loop arguments outright.
 
-fn = fieldnames(mystruct);
+fn = fieldnames(mystruct); %make sure this is a 1x# vector ie: 1x2 vs 2x1
 for lp=fn
 doSomeOperation( mystruct( lp{:} ) );
 end

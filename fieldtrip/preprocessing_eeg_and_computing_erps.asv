@@ -1,0 +1,9 @@
+%%%%% Preprocessing of EEG data and computing ERPs %%%%%%%%
+
+%  http://www.fieldtriptoolbox.org/tutorial/preprocessing_erp/
+%  files located on local home pc at: 
+cfg              = [];
+cfg.trialfun     = 'trialfun_affcog';
+cfg.headerfile   = 's04.vhdr';
+cfg.datafile     = 's04.eeg';
+cfg = ft_definetrial(cfg);
