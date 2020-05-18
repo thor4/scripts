@@ -33,9 +33,13 @@ pbCountydx.newCasesMA = movmean(pbCountydx.newCases,7);
 figure(),clf %plot 7-day MA of new cases on log-scale
 plot(pbCountydx.date,pbCountydx.newCasesMA,'LineWidth',2)
 set(gca, 'YScale', 'log')
+
 line([pbCountydx.date(56) pbCountydx.date(56)],...
-    [1 max(pbCountydx.newCasesMA)],'LineStyle','--','Color',[0.25 0.25 0.25]);
-text(pbCountydx.date(56)+0.5,75,'Easter payload?');
+    [0 max(pbCountydx.newCasesMA)],'LineStyle','--','Color',[0.25 0.25 0.25]);
+plot(line([pbCountydx.date(56) pbCountydx.date(56)],...
+    [0 max(pbCountydx.newCasesMA)],'LineStyle','--','Color',[0.25 0.25 0.25]));
+line([time(x(2)+5) time(x(2)+5)],[min(y) max(y)],'LineWidth',2,'Color','k'); %y line
+'LineStyle','--')
 title('7-day Moving Avg of New Cases in PBC'); ylabel('Cases'); 
 
 
