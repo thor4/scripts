@@ -14,9 +14,10 @@ end
 % plot(pbCountydx.date,pbCountydx.newDeaths) %not helpful
 
 figure(),clf %plot new cases on log-scale
-plot(pbCountydx.date,pbCounty.cases,'LineWidth',2)
-set(gca, 'YScale', 'log')
-title('Total Cases in PB County'); ylabel('Cases'); 
+plot(pbCountydx.date,pbCounty.cases,'LineWidth',4)
+set(gca,'YScale','log','FontSize',20)
+title('Total Cases in PB County','FontSize',24); ylabel('Cases'); 
+export_fig new_cases.png -transparent % no background
 
 % %setup percentages
 % for i=7:length(pbCountydx.newCases)
@@ -31,12 +32,13 @@ title('Total Cases in PB County'); ylabel('Cases');
 %calc & plot 7-day moving avg of new cases
 pbCountydx.newCasesMA = movmean(pbCountydx.newCases,7); 
 figure(),clf %plot 7-day MA of new cases on log-scale
-plot(pbCountydx.date,pbCountydx.newCasesMA,'LineWidth',2)
-set(gca, 'YScale', 'log')
+plot(pbCountydx.date,pbCountydx.newCasesMA,'LineWidth',4)
+set(gca,'YScale','log','FontSize',20)
 line([pbCountydx.date(56) pbCountydx.date(56)],...
     [1 max(pbCountydx.newCasesMA)],'LineStyle','--','Color',[0.25 0.25 0.25]);
-text(pbCountydx.date(56)+0.5,75,'Easter payload?');
-title('7-day Moving Avg of New Cases in PBC'); ylabel('Cases'); 
+text(pbCountydx.date(56)+0.5,75,'Easter payload?','FontSize',18);
+title('7-day Moving Avg of New Cases in PBC','FontSize',24); ylabel('Cases'); 
+export_fig 7_day_ma.png -transparent % no background
 
 
 
