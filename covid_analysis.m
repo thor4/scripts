@@ -1,11 +1,11 @@
 %% Read-in and build-out data structures
 
-counties = readtable('us-counties.csv');
-summary(counties) %give breakdown of table
-counties.county = categorical(counties.county); %convert to categorical
+casesPBC = readtable('us-counties.csv');
+summary(casesPBC) %give breakdown of table
+casesPBC.county = categorical(casesPBC.county); %convert to categorical
 % index rows with the correct variables in column
-idx = counties.county == 'Palm Beach';
-pbCounty = counties(idx,:); %create table based on index
+idx = casesPBC.county == 'Palm Beach';
+pbCounty = casesPBC(idx,:); %create table based on index
 pbCountydx = pbCounty; %setup diff table
 for i=2:length(pbCountydx.cases) %find the differences per day
     pbCountydx{i,5} = pbCounty{i,5}-pbCounty{i-1,5};
@@ -133,6 +133,40 @@ disp(mean(earlyCov)),disp(mean(lateCov)) %85.35, 97.5385
 %test the alt hypothesis that the pop mean of lateCov > pop mean of earlyCov
 [h,p,ci,stats] = ttest2(earlyCov,lateCov,'tail','left') 
 % p = 0.2405, tstat: -0.7132, df: 31 *not significant*
+
+%% 05/31/20 Analysis
+
+casesPBC = readtable('Florida_COVID19_Case_Line_Data.csv');
+%convert var's of interest to categorical
+casesPBC.Age_group = categorical(casesPBC.Age_group); 
+casesPBC.Gender = categorical(casesPBC.Gender); 
+casesPBC.Hospitalized = categorical(casesPBC.Hospitalized); 
+casesPBC.Died = categorical(casesPBC.Died); 
+casesPBC.EventDate = datetime(casesPBC.EventDate,...
+    'InputFormat','yyyy/MM/dd HH:mm:ss+ss'); %convert to date type
+
+casesPBC.EventDate = datetime(casesPBC.EventDate,...
+    'InputFormat','yyyy/MM/dd'); %convert to date type
+
+%convert the table to a timetable
+casesPBCtt = table2timetable(casesPBC,'RowTimes','EventDate');
+casesPBCtt(1:5,:)
+summary(casesPBCtt) %give breakdown of table
+
+%how to summarize each day's columns?
+% https://www.mathworks.com/help/matlab/matlab_prog/subscript-into-times-of-timetable.html
+
+%create additional views for plotting
+idx = casesPBC.Hospitalized == 'YES';
+hospsPBCtt = casesPBCtt(idx,:); %create table based on index (1197 total)
+
+pbCountydx = pbCounty; %setup diff table
+for i=2:length(pbCountydx.cases) %find the differences per day
+    pbCountydx{i,5} = pbCounty{i,5}-pbCounty{i-1,5};
+    pbCountydx{i,6} = pbCounty{i,6}-pbCounty{i-1,6};
+    pbCountydx.Properties.VariableNames{5} = 'newCases';
+    pbCountydx.Properties.VariableNames{6} = 'newDeaths';
+end
 
 
 
